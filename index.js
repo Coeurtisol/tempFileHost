@@ -9,9 +9,10 @@ const __dirname = path.resolve();
 app.use(
   fileUpload({
     useTempFiles: true,
-    tempFileDir: "/tempFiles/",
+    tempFileDir: __dirname + "/tempFiles/",
   })
 );
+app.use(express.static("public"));
 
 const registre = new Map();
 
@@ -39,9 +40,7 @@ app.post("/upload", async (req, res) => {
     return;
   }
   const file = req.files.file;
-  const newId = Math.floor(
-    Math.random() * 0xffffff
-  ).toString(16);
+  const newId = Math.floor(Math.random() * 0xffffff).toString(16);
   await file.mv(`${__dirname}/files/${newId + file.name}`);
   registre.set(newId, newId + file.name);
   res.send(newId);

@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+}
+*:no-button {
+  color: #ddd;
+}
+html {
+  background-color: #333;
+}
+main {
+  width: fit-content;
+  margin: 300px auto;
+  display: flex;
+  flex-direction: column;
+}
+form {
+  width: fit-content;
+}
+#progress-bar {
+  text-align: center;
+  background-color: #ddd;
+  color: #333;
+}
+table {
+  margin-top: 1rem;
+  border-collapse: collapse;
+}
+tr {
+  width: 100%;
+}
+td {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  padding: 6px;
+}
+a {
+  color: #ddd;
+}
+a:hover {
+  text-decoration: none;
+}

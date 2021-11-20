@@ -5,55 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.23.0/axios.min.js"></script>
-    <style>
-      html{
-        background-color: #333;
-      }
-      *:no-button{
-        color: #ddd;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.23.0/axios.min.js"
+    ></script>
+    <script defer src="js/client.js"></script>
   </head>
   <body>
-    <form>
-      <input type="file" name="monFicher" id="monFichier" />
-      <input type="submit" value="Envoyer" />
-    </form>
-    <div id="link"></div>
-    <div id="progress-bar"></div>
-    <script>
-      const fileInput = document.getElementById("monFichier");
-      const form = document.querySelector("form");
-      const progressBar = document.getElementById("progress-bar");
-      const linkDiv = document.getElementById("link");
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const file = fileInput.files[0];
-        if (!file) {
-          console.log("Pas de fichier");
-          return;
-        }
-        try {
-          const data = new FormData();
-          data.append("file", file, file.name);
-          const res = await axios.post("/upload", data, {
-            onUploadProgress: (progressEvent) => {
-              const percentCompleted = Math.round(
-                (progressEvent.loaded * 100) / progressEvent.total
-              );
-              progressBar.innerText = percentCompleted + "%";
-            },
-          });
-          progressBar.innerText = "";
-          const id = res.data;
-          linkDiv.insertAdjacentHTML("beforeend", `<a href="/${id}">${id}</a><br/>`);
-          console.log(res);
-        } catch (error) {
-          console.log(error);
-        }
-      });
-    </script>
+    <main>
+      <form>
+        <input type="file" name="monFicher" id="monFichier" />
+        <input type="submit" value="Envoyer" />
+      </form>
+      <div id="progress-bar"></div>
+      <table id="link-table"></table>
+    </main>
   </body>
 </html>
