@@ -15,14 +15,20 @@ main {
 }
 form {
   width: fit-content;
+  margin-bottom: 16px;
+}
+#progress-bar-container {
+  border: 1px solid #ddd;
+  width: 100%;
+  display: none;
 }
 #progress-bar {
   text-align: center;
   background-color: #ddd;
   color: #333;
+  padding: 6px 0;
 }
 table {
-  margin-top: 1rem;
   border-collapse: collapse;
 }
 tr {

@@ -1,5 +1,6 @@
 const fileInput = document.getElementById("monFichier");
 const form = document.querySelector("form");
+const progressBarContainer = document.getElementById("progress-bar-container");
 const progressBar = document.getElementById("progress-bar");
 const linkDiv = document.getElementById("link");
 const linkTable = document.getElementById("link-table");
@@ -19,16 +20,29 @@ form.addEventListener("submit", async (e) => {
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
         );
+        progressBarContainer.style.display = "block";
         progressBar.innerText = percentCompleted + "%";
         progressBar.style.width = percentCompleted + "%";
       },
     });
     // form.reset();
-    progressBar.innerText = "";
+    progressBarContainer.style.display = "none";
     const id = res.data + "";
+    const url = window.location.href + id;
     linkTable.insertAdjacentHTML(
       "afterbegin",
-      `<tr><td data_link="${id}"><a href="/${id}">/${id}</a><i onClick='copyToClipboard(this)' class="far fa-clipboard"></td></tr>`
+      `<tr>
+        <td data_link="${url}">
+          <a href="${url}"
+             title="Ouvrir le lien">
+            ${url}
+          </a>
+          <i onClick='copyToClipboard(this)'
+             class="far fa-clipboard"
+             title="Ajouter au presse-papier"
+          >
+        </td>
+      </tr>`
     );
     console.log(res);
   } catch (error) {
@@ -37,14 +51,11 @@ form.addEventListener("submit", async (e) => {
 });
 
 async function copyToClipboard(el) {
-  const id = el.parentElement.getAttribute("data_link");
-  const link = `http://127.0.0.1:8080/${id}`;
-  navigator.clipboard.writeText(link).then(
-    () => {
-      console.log(link, "ajouté au presse-papier");
-    },
-    () => {
-      console.log("Echec lors de l'ajout au presse-papier");
-    }
-  );
+  const url = el.parentElement.getAttribute("data_link");
+  try {
+    await navigator.clipboard.writeText(url);
+    console.log(url, "ajouté au presse-papier");
+  } catch (error) {
+    console.log("Echec lors de l'ajout au presse-papier");
+  }
 }
