@@ -6,17 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.23.0/axios.min.js"></script>
+    <style>
+      html{
+        background-color: #333;
+      }
+      *:no-button{
+        color: #ddd;
+      }
+    </style>
   </head>
   <body>
     <form>
       <input type="file" name="monFicher" id="monFichier" />
       <input type="submit" value="Envoyer" />
     </form>
+    <div id="link"></div>
     <div id="progress-bar"></div>
     <script>
       const fileInput = document.getElementById("monFichier");
       const form = document.querySelector("form");
       const progressBar = document.getElementById("progress-bar");
+      const linkDiv = document.getElementById("link");
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -38,7 +48,7 @@
           });
           progressBar.innerText = "";
           const id = res.data;
-          form.insertAdjacentHTML("afterend", `<a href="/${id}">${id}</a>`);
+          linkDiv.insertAdjacentHTML("beforeend", `<a href="/${id}">${id}</a><br/>`);
           console.log(res);
         } catch (error) {
           console.log(error);

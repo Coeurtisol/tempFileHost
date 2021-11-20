@@ -15,19 +15,21 @@ app.use(
 
 const registre = new Map();
 
-function filesList() {
-  fs.readdir("/files", (err, files) => {
-    // lister les fichiers d'un dossier
+(async function () {
+  fs.readdir(__dirname + "/files", (err, files) => {
+    console.log("fichiers", files);
     if (files) {
       files.forEach((file) => {
-        console.log(file);
+        if (!registre.has(file)) {
+          fs.rmSync(__dirname + "/files/" + file);
+          console.info(`Fichier " ${file} " supprimé`);
+        }
       });
     }
   });
-}
+})();
 
 app.get("/", (req, res) => {
-  filesList();
   res.sendFile(__dirname + "/public/index.html");
 });
 
@@ -37,15 +39,11 @@ app.post("/upload", async (req, res) => {
     return;
   }
   const file = req.files.file;
-  const newId = (
-    // Date.now() + Math.floor(Math.random() * 0xffffffffff)
-    Math.floor(Math.random() * 0xffffff)
+  const newId = Math.floor(
+    Math.random() * 0xffffff
   ).toString(16);
   await file.mv(`${__dirname}/files/${newId + file.name}`);
   registre.set(newId, newId + file.name);
-  // for (const [key, value] of registre) {
-  //   console.log(key, value);
-  // }
   res.send(newId);
 });
 
