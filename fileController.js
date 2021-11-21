@@ -8,16 +8,19 @@ export async function upload(req, res) {
     return;
   }
   const file = req.files.file;
+  const { timeLife, useLife } = req.body;
+  const expire_at = new Date(Date.now() + Number(timeLife));
+  const life = useLife == "" ? null : Number(useLife);
   const newId = "f" + Math.floor(Math.random() * 0xffffff).toString(16);
   const newFileName = newId + file.name;
   let conn;
   try {
     await file.mv(`${__dirname}/files/${newFileName}`);
     conn = await pool.getConnection();
-    await conn.query("INSERT INTO files(id,file_name) value (?,?)", [
-      newId,
-      newFileName,
-    ]);
+    await conn.query(
+      "INSERT INTO files(id,file_name,expire_at,life) value (?,?,?,?)",
+      [newId, newFileName, expire_at, life]
+    );
     res.end(newId);
   } catch (err) {
     console.log(err);
@@ -29,12 +32,16 @@ export async function upload(req, res) {
 
 export async function getFile(req, res) {
   const id = req.params.id;
-  if (id == "favicon.ico") res.end();
+  if (id == "favicon.ico") {
+    //TODO voir pour une autre solution?
+    res.end();
+    return;
+  }
   let conn;
   try {
     conn = await pool.getConnection();
     const dbRes = await conn.query("SELECT * FROM files WHERE id = ?", [id]);
-    if (!dbRes) {
+    if (dbRes.length == 0) {
       res.end("Lien invalide ou fichier introuvable");
       return;
     }

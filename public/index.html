@@ -22,8 +22,29 @@
   <body>
     <main>
       <form>
-        <input type="file" name="monFicher" id="monFichier" />
-        <input type="submit" value="Envoyer" />
+        <div>
+          <input type="file" name="file-input" id="file-input" />
+          <p id="file_error" class="error-text"></p>
+        </div>
+        <div>
+          <p class="centered">Limite de temps</p>
+          <input type="number" id="unit-value" value="30" min="1" max="59" />
+          <select id="unit-type">
+            <option value="minute" selected>Minutes</option>
+            <option value="heure">Heures</option>
+            <option value="jour">Jours</option>
+          </select>
+        </div>
+        <div>
+          <p class="centered">
+            <input type="checkbox" id="lifeCheck" />
+            <label for="lifeCheck">Limite d'utilisation (optionnelle)</label>
+          </p>
+          <input type="number" id="lifeNb" value="" min="1" max="100" />
+        </div>
+        <div class="centered">
+          <input type="submit" value="Envoyer" />
+        </div>
       </form>
       <div id="progress-bar-container">
         <div id="progress-bar"></div>
